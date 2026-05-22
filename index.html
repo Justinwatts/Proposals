@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPC Customer Lifecycle Engine — Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a1a;
+  --paper: #f5f1e8;
+  --paper-deep: #ebe4d3;
+  --accent: #8b1e1e;
+  --accent-soft: #d4a574;
+  --rule: #2a2a2a;
+  --muted: #6b6259;
+  --highlight: #fff8dc;
+  --green: #3d5a3d;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  font-size: 16px;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(139, 30, 30, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(212, 165, 116, 0.04) 0%, transparent 50%);
+}
+
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 60px 48px;
+}
+
+/* --- Masthead --- */
+.masthead {
+  border-top: 4px double var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 32px 0 24px;
+  margin-bottom: 48px;
+  position: relative;
+}
+
+.masthead::before {
+  content: "PROPOSAL";
+  position: absolute;
+  top: 12px;
+  right: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 58px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  color: var(--ink);
+}
+
+h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+}
+
+.subtitle {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted);
+  max-width: 720px;
+  line-height: 1.4;
+}
+
+.meta-row {
+  display: flex;
+  gap: 48px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  font-size: 13px;
+}
+
+.meta-item .label {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.meta-item .value {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* --- Sections --- */
+section {
+  margin: 80px 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.section-num {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+  max-width: 68ch;
+}
+
+p.lead {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink);
+  margin-bottom: 24px;
+  max-width: 68ch;
+}
+
+/* --- Problem callout --- */
+.problem-quote {
+  background: var(--paper-deep);
+  border-left: 3px solid var(--accent);
+  padding: 28px 32px;
+  margin: 32px 0;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--rule);
+}
+
+.problem-quote .attrib {
+  display: block;
+  font-style: normal;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 16px;
+  font-weight: 500;
+}
+
+/* --- The Comparison (clickable toggle) --- */
+.compare-toggle {
+  margin: 40px 0;
+}
+
+.compare-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.compare-tab {
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  border-bottom: none;
+  padding: 18px 24px;
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  text-align: left;
+  position: relative;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 2px 2px 0 0;
+}
+
+.compare-tab:hover {
+  background: #ddd4bc;
+  color: var(--ink);
+}
+
+.compare-tab .tap-hint {
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  background: var(--accent);
+  color: var(--paper);
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 2px;
+  opacity: 0.9;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.85; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
+}
+
+.compare-tab.active .tap-hint { display: none; }
+
+.compare-tab.active {
+  background: white;
+  color: var(--ink);
+  border-color: var(--rule);
+  border-bottom: 1px solid white;
+  z-index: 2;
+}
+
+.compare-tab .tab-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.compare-tab.tab-without.active .tab-icon { color: var(--muted); border-color: var(--muted); }
+.compare-tab.tab-with.active .tab-icon { color: var(--accent); border-color: var(--accent); }
+
+.compare-tab .tab-meta {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.compare-tab.active.tab-with .tab-meta { color: var(--accent); }
+
+.compare-panel-wrap {
+  border: 1px solid var(--rule);
+  border-top: none;
+  background: white;
+  position: relative;
+  min-height: 540px;
+}
+
+.compare-panel {
+  padding: 36px 40px;
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.compare-panel.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.compare-panel.panel-without { background: #f5f1e8; }
+
+.compare-panel-label {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.panel-without .compare-panel-label { color: var(--muted); }
+.panel-with .compare-panel-label { color: var(--accent); }
+
+.compare-panel-title {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 500;
+  margin-bottom: 28px;
+  line-height: 1.2;
+}
+
+.timeline-step {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+  align-items: start;
+}
+
+.timeline-step:last-child { border-bottom: none; }
+
+.timeline-time {
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-top: 2px;
+}
+
+.panel-without .timeline-time { color: var(--muted); }
+
+.timeline-event {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.timeline-event strong { font-weight: 600; }
+
+.compare-result {
+  margin-top: 24px;
+  padding: 16px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 2px;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.panel-with .compare-result {
+  background: var(--highlight);
+  color: var(--rule);
+  border-left: 3px solid var(--green);
+}
+
+/* --- The example email --- */
+.example-block {
+  margin: 40px 0;
+}
+
+.example-setup {
+  background: var(--paper-deep);
+  padding: 24px 28px;
+  border-radius: 2px;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.example-setup .setup-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 0;
+}
+
+.example-setup .setup-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  min-width: 140px;
+}
+
+.example-setup .setup-value {
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.email-mockup {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08);
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.email-header {
+  background: #f9f9f9;
+  padding: 14px 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #666;
+}
+
+.email-header .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ddd;
+}
+
+.email-meta {
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+  color: #555;
+}
+
+.email-meta .row { padding: 3px 0; }
+.email-meta .row strong { color: #333; min-width: 50px; display: inline-block; }
+.email-meta .subj { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-top: 6px; }
+
+.email-body {
+  padding: 24px 28px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #2a2a2a;
+}
+
+.email-body p { margin-bottom: 14px; max-width: none; }
+
+.spec-list {
+  background: #fafaf6;
+  border-left: 3px solid var(--accent-soft);
+  padding: 14px 18px;
+  margin: 16px 0;
+  list-style: none;
+}
+
+.spec-list li {
+  padding: 6px 0;
+  font-size: 14px;
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.spec-list li::before {
+  content: "→";
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.spec-list .spec-headline {
+  font-weight: 600;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 1px;
+}
+
+.spec-list .spec-detail {
+  display: block;
+  font-size: 13px;
+  color: var(--rule);
+  line-height: 1.5;
+}
+
+.email-signoff {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.email-signoff strong { color: #1a1a1a; font-size: 15px; }
+
+/* --- Proof point standalone block --- */
+.proof-point {
+  background: white;
+  border: 2px solid var(--accent);
+  padding: 40px 44px;
+  margin: 32px 0;
+  position: relative;
+}
+
+.proof-point::before {
+  content: "STEP 0";
+  position: absolute;
+  top: -12px;
+  left: 32px;
+  background: var(--accent);
+  color: var(--paper);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  font-weight: 700;
+  padding: 5px 14px;
+}
+
+.proof-point h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 30px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  line-height: 1.15;
+}
+
+.proof-point .tagline {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.proof-point-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+  margin-top: 24px;
+  align-items: start;
+}
+
+.proof-point ul.phase-deliverables {
+  margin: 0;
+}
+
+.proof-point-cost {
+  background: var(--paper-deep);
+  padding: 24px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.proof-point-cost .price {
+  font-family: 'Fraunces', serif;
+  font-size: 56px;
+  font-weight: 400;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.proof-point-cost .price-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.proof-point-cost .price-detail {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 14px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.proof-point-cost .gate {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .proof-point { padding: 32px 24px; }
+  .proof-point-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+.roadmap {
+  margin: 40px 0;
+}
+
+.phase {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 32px;
+  padding: 32px 0;
+  border-top: 1px solid var(--rule);
+  align-items: start;
+}
+
+.phase:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.phase-month {
+  position: sticky;
+  top: 32px;
+}
+
+.phase-month .num {
+  font-family: 'Fraunces', serif;
+  font-size: 72px;
+  font-weight: 300;
+  line-height: 0.9;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+}
+
+.phase-month .label {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.phase-content h3 {
+  font-size: 26px;
+  margin-bottom: 8px;
+}
+
+.phase-content .tagline {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.phase-deliverables {
+  list-style: none;
+  margin: 20px 0;
+}
+
+.phase-deliverables li {
+  padding: 8px 0 8px 28px;
+  position: relative;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.phase-deliverables li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 16px;
+  width: 16px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.phase-tag {
+  display: inline-block;
+  background: var(--paper-deep);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 4px 10px;
+  margin-right: 8px;
+  color: var(--rule);
+}
+
+.phase-tag.value { background: var(--accent); color: var(--paper); }
+.phase-tag.cost { background: white; border: 1px solid var(--rule); }
+
+/* --- Lucide-style icons --- */
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+.icon-sm { width: 16px; height: 16px; }
+.icon-md { width: 22px; height: 22px; }
+.icon-lg { width: 32px; height: 32px; }
+.icon-xl { width: 44px; height: 44px; }
+
+/* --- Capability cards --- */
+.capabilities {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin: 36px 0;
+}
+
+.capability {
+  background: white;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 2px;
+  padding: 28px 28px 24px;
+  position: relative;
+}
+
+.capability.cap-headline {
+  border: 1px solid var(--accent);
+  background: linear-gradient(180deg, white 0%, #fdf8f0 100%);
+}
+
+.capability-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.capability-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--paper-deep);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cap-headline .capability-icon {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.capability-title {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.agentic-badge {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(139, 30, 30, 0.08);
+  padding: 3px 8px;
+  border-radius: 2px;
+  margin-left: 8px;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+
+.capability-body {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--rule);
+  margin: 0;
+}
+
+.capability-body .micro {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .capabilities { grid-template-columns: 1fr; }
+}
+
+/* --- Customer Journey Flow Diagram --- */
+.journey-svg-wrap {
+  margin: 32px 0;
+  padding: 32px;
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow-x: auto;
+}
+
+.journey-svg-wrap svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* --- Value table --- */
+.value-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 14px;
+}
+
+.value-table th {
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--rule);
+}
+
+.value-table td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  vertical-align: top;
+}
+
+.value-table td:first-child {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 15px;
+  width: 24%;
+}
+
+.value-table td:last-child {
+  text-align: right;
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  color: var(--accent);
+  width: 14%;
+}
+
+/* --- Investment block --- */
+.investment {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 48px;
+  margin: 60px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.investment::before {
+  content: "$";
+  position: absolute;
+  right: -30px;
+  bottom: -80px;
+  font-family: 'Fraunces', serif;
+  font-size: 320px;
+  font-weight: 300;
+  color: rgba(212, 165, 116, 0.08);
+  line-height: 1;
+}
+
+.investment .eyebrow { color: var(--accent-soft); }
+
+.investment h2 {
+  color: var(--paper);
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+
+.investment .lead {
+  color: rgba(245, 241, 232, 0.85);
+  font-size: 18px;
+  max-width: 60ch;
+}
+
+.invest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-top: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.invest-item .num {
+  font-family: 'Fraunces', serif;
+  font-size: 42px;
+  font-weight: 400;
+  color: var(--accent-soft);
+  line-height: 1;
+}
+
+.invest-item .label {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 232, 0.6);
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.invest-item .desc {
+  font-size: 13px;
+  color: rgba(245, 241, 232, 0.75);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* --- Footer --- */
+.proposal-footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 4px double var(--rule);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+}
+
+.ornament {
+  text-align: center;
+  margin: 48px 0;
+  color: var(--accent);
+  font-size: 14px;
+  letter-spacing: 1em;
+}
+
+a.car-link {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-soft);
+  font-weight: 500;
+}
+
+a.car-link:hover { background: var(--highlight); }
+
+@media (max-width: 768px) {
+  .container { padding: 32px 24px; }
+  h1 { font-size: 38px; }
+  h2 { font-size: 28px; }
+  .compare-tabs { grid-template-columns: 1fr; gap: 0; }
+  .compare-tab { border-bottom: 1px solid var(--rule); }
+  .compare-tab.active { border-bottom: 1px solid white; }
+  .compare-panel { padding: 28px 24px; }
+  .meta-row { flex-direction: column; gap: 20px; }
+  .invest-grid { grid-template-columns: 1fr; }
+  .phase { grid-template-columns: 1fr; gap: 16px; }
+  .phase-month { position: static; }
+  .phase-month .num { font-size: 48px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- ============ MASTHEAD ============ -->
+<header class="masthead">
+  <div class="eyebrow">Prepared for Rob &amp; Gino · Unique Prestige Cars</div>
+  <h1>The <em>Lifecycle</em><br>Agent</h1>
+  <p class="subtitle">A single AI agent that watches UPC's customer base and inventory, then acts to keep past customers engaged, returning for service, and likely to buy their next car from you.</p>
+  <div class="meta-row">
+    <div class="meta-item">
+      <div class="label">Prepared by</div>
+      <div class="value">Justin Watts</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Engagement</div>
+      <div class="value">Proof point + 6 months</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Investment</div>
+      <div class="value">$1.5k proof + $12k build</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Status</div>
+      <div class="value">Draft for discussion</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ THE PROBLEM ============ -->
+<section>
+  <div class="section-header">
+    <span class="section-num">I.</span>
+    <h2>The problem worth solving</h2>
+  </div>
+
+  <p class="lead">UPC is excellent at selling prestige cars. What's missing is what happens after the sale.</p>
+
+  <p>Right now, when a customer drives off the lot, the relationship effectively ends. There's no system to remind them their Audi needs a service in 18 months. No anniversary touchpoint. No way to tell them when a newer version of their car arrives in your yard. Each customer is a one-time transaction.</p>
+
+  <p>Most dealers compete on the same axis: who can sell the next car to the next walk-in. The bigger opportunity is to compete on a different axis: who owns the post-sale relationship. Cars themselves come from Duttons. Leads come from CarSales. Neither of those is yours. The customer relationship is the one thing UPC can own outright.</p>
+
+  <div class="problem-quote">
+    The trade isn't between cars. It's between dealers. Whoever stays in the relationship wins the next sale.
+    <span class="attrib">— The strategic core of this proposal</span>
+  </div>
+</section>
+
+<!-- ============ THE PRODUCT ============ -->
+<section>
+  <div class="section-header">
+    <span class="section-num">II.</span>
+    <h2>What we're building</h2>
+  </div>
+
+  <p class="lead">A single AI agent with four capabilities. Each capability takes care of a different moment in the customer's relationship with UPC. Together, they turn every car sale into years of structured engagement.</p>
+
+  <p>This isn't email automation. Automation makes you faster at the existing game. This is a coordination layer: it connects three things UPC already has (its customers, its inventory, and the passing of time) and acts on the patterns between them. The upgrade capability in particular makes real judgement calls about which past customer would be a fit for which current car, and what to say to them.</p>
+
+  <div class="capabilities">
+
+    <div class="capability">
+      <div class="capability-header">
+        <span class="capability-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </span>
+        <h3 class="capability-title">Service</h3>
+      </div>
+      <p class="capability-body">
+        Watches each customer's car and triggers a service reminder when one is due. Picks the right interval for the make and model (Audi service schedules differ from BMW from Porsche), and adjusts the tone of the reminder based on how long the customer has been with you.
+        <span class="micro">Outcome: workshop bookings UPC would have otherwise lost to whoever ranks first on Google.</span>
+      </p>
+    </div>
+
+    <div class="capability">
+      <div class="capability-header">
+        <span class="capability-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        </span>
+        <h3 class="capability-title">Anniversary</h3>
+      </div>
+      <p class="capability-body">
+        Remembers the date each customer picked up their car. Triggers a personal note from Gino at the 12-month mark with a free wash offer. The kind of touch that big dealers don't bother with and that UPC has never had the systems to manage.
+        <span class="micro">Outcome: goodwill, reviews, referrals, and a returning customer who comes by the yard.</span>
+      </p>
+    </div>
+
+    <div class="capability cap-headline">
+      <div class="capability-header">
+        <span class="capability-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3L12 3z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
+        </span>
+        <h3 class="capability-title">Upgrade <span class="agentic-badge">The agentic one</span></h3>
+      </div>
+      <p class="capability-body">
+        Watches your inventory daily. When a new car arrives, the agent looks across your past customer base and asks: who would this car suit? It picks the right past customer, identifies the meaningful spec differences between their car and the new one, and drafts a personal note from Gino with the comparison built in. Gino reviews, edits if needed, sends with one tap.
+        <span class="micro">Outcome: repeat car sales. The capability that turns a one-time buyer into a returning customer over 3 to 5 years.</span>
+      </p>
+    </div>
+
+    <div class="capability">
+      <div class="capability-header">
+        <span class="capability-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.04z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.04z"/></svg>
+        </span>
+        <h3 class="capability-title">Learning</h3>
+      </div>
+      <p class="capability-body">
+        Captures Gino's edits and decisions. When he changes a phrase, deletes a spec point, or skips a customer, the agent notices. Over time, we use those patterns to tune what the agent suggests next, and to promote consistently-approved match types to send automatically without his review.
+        <span class="micro">Outcome: the agent gets sharper the more it's used, and Gino spends less time on it as it earns his trust.</span>
+      </p>
+    </div>
+
+  </div>
+
+  <p style="font-size: 14px; color: var(--muted); font-style: italic; margin-top: 24px;">The agent is one product, deployed in layers across six months. Each month it gains a new capability or matures an existing one. By month 6, the agent is operational across all four capabilities and learning continuously.</p>
+</section>
+
+<!-- ============ WITHOUT vs WITH ============ -->
+<section>
+  <div class="section-header">
+    <span class="section-num">III.</span>
+    <h2>The two paths a customer can take</h2>
+  </div>
+
+  <p class="lead">Same customer. Same car. Different outcome, depending on whether the agent exists.</p>
+
+  <p style="font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 8px;">Tap below to switch between the two paths.</p>
+
+  <div class="compare-toggle">
+
+    <div class="compare-tabs" role="tablist">
+      <button class="compare-tab tab-without active" role="tab" aria-selected="true" data-target="panel-without">
+        <span class="tab-icon">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </span>
+        <span>
+          <span class="tab-meta">Without the agent</span>
+          The current path
+        </span>
+      </button>
+      <button class="compare-tab tab-with" role="tab" aria-selected="false" data-target="panel-with">
+        <span class="tap-hint">Tap to compare</span>
+        <span class="tab-icon">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+        <span>
+          <span class="tab-meta">With the agent</span>
+          What the relationship becomes
+        </span>
+      </button>
+    </div>
+
+    <div class="compare-panel-wrap">
+
+      <div class="compare-panel panel-without active" id="panel-without" role="tabpanel">
+        <div class="compare-panel-label">Without the agent</div>
+        <div class="compare-panel-title">The current path</div>
+
+        <div class="timeline-step">
+          <div class="timeline-time">Day 0</div>
+          <div class="timeline-event">Customer buys a 2014 Audi Q5 from Gino. Drives away happy.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-time">Month 6</div>
+          <div class="timeline-event">Car needs a service. Customer Googles "Audi service near me." Books with whoever ranks first. <strong>Not UPC.</strong></div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-time">Year 1</div>
+          <div class="timeline-event">Anniversary of purchase. Customer doesn't think about it. UPC doesn't either.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-time">Year 2</div>
+          <div class="timeline-event">Customer starts thinking about upgrading. Opens Carsales. Browses Audi dealers. UPC is one option among 40.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-time">Year 3</div>
+          <div class="timeline-event">Customer trades in their Q5. Buys from a different dealer who happened to be open that Saturday.</div>
+        </div>
+
+        <div class="compare-result">
+          Single transaction. Zero service revenue. No repeat sale. Customer forgets UPC exists.
+        </div>
+      </div>
+
+      <div class="compare-panel panel-with" id="panel-with" role="tabpanel">
+        <div class="compare-panel-label">With the agent</div>
+        <div class="compare-panel-title">What the relationship becomes</div>
+
+        <div class="timeline-step">
+          <div class="timeline-time">Day 0</div>
+          <div class="timeline-event">Customer buys a 2014 Audi Q5. Their details flow into the agent automatically.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-time">Month 6</div>
+          <div class="timeline-event">Email from UPC: <em>"Hey Mark, your Q5 is due for its 6-month check. We can fit you in next Tuesday."</em> Service booked. <strong>UPC earns workshop revenue.</strong></div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-time">Year 1</div>
+          <div class="timeline-event">Anniversary email: <em>"One year in the Q5! Come by for a free wash and detail, on us."</em> Customer feels remembered.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-time">Year 2</div>
+          <div class="timeline-event">2017 Q5 arrives at UPC. The agent matches it to Mark's profile. Drafts a personal note from Gino with the spec comparison. Gino reviews and sends.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-time">Year 2 + 1 week</div>
+          <div class="timeline-event">Mark walks into UPC, asks about the 2017 Q5. <strong>Closes another sale.</strong></div>
+        </div>
+
+        <div class="compare-result">
+          4+ year relationship. Workshop revenue across multiple services. Repeat car sale. Mark recommends UPC to two friends.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE WORKED EXAMPLE ============ -->
+<section>
+  <div class="section-header">
+    <span class="section-num">IV.</span>
+    <h2>What the agent produces</h2>
+  </div>
+
+  <p class="lead">Here's exactly what the upgrade capability puts in front of Gino when a 2017 Q5 lands and Mark, who bought a 2014 Q5 two years ago, is a clean match.</p>
+
+  <div class="example-block">
+
+    <div class="example-setup">
+      <div class="setup-row">
+        <span class="setup-label">Past customer</span>
+        <span class="setup-value">Mark · bought 2014 Audi Q5 from UPC in May 2024</span>
+      </div>
+      <div class="setup-row">
+        <span class="setup-label">Current inventory match</span>
+        <span class="setup-value"><a class="car-link" href="https://uniqueprestigecars.com.au/car/2017-audi-q5-8r-2-0-tdi-quattro-wagon/" target="_blank">2017 Audi Q5 8R 2.0 TDI Quattro Wagon · $16,999</a></span>
+      </div>
+      <div class="setup-row">
+        <span class="setup-label">Agent's match reasoning</span>
+        <span class="setup-value">Same model, 3 years newer, sensible upgrade path, lower km</span>
+      </div>
+      <div class="setup-row">
+        <span class="setup-label">Workflow</span>
+        <span class="setup-value">Drafted by the agent, reviewed and sent by Gino</span>
+      </div>
+    </div>
+
+    <div class="email-mockup">
+      <div class="email-header">
+        <span class="dot"></span><span class="dot" style="background:#e3a647"></span><span class="dot" style="background:#5dba5d"></span>
+        <span style="margin-left:8px">Mail</span>
+      </div>
+      <div class="email-meta">
+        <div class="row"><strong>From:</strong> Gino · Unique Prestige Cars &lt;gino@uniqueprestigecars.com.au&gt;</div>
+        <div class="row"><strong>To:</strong> Mark</div>
+        <div class="row subj">Thought of you when this 2017 Q5 came in</div>
+      </div>
+      <div class="email-body">
+        <p>Hey Mark,</p>
+        <p>Hope the Q5 has been treating you well. It's been about two years since you picked it up from us, and I figured you might be starting to think about what's next.</p>
+        <p>A 2017 Q5 just landed in our yard and it's a clean step up from yours. Same car you already love, just a generation newer. The differences worth knowing about:</p>
+        <ul class="spec-list">
+          <li>
+            <span>
+              <span class="spec-headline">23,000 fewer kilometres on the clock</span>
+              <span class="spec-detail">than yours has now</span>
+            </span>
+          </li>
+          <li>
+            <span>
+              <span class="spec-headline">Apple CarPlay and Android Auto built in</span>
+              <span class="spec-detail">the big upgrade between the 2014 and 2017 Q5</span>
+            </span>
+          </li>
+          <li>
+            <span>
+              <span class="spec-headline">Updated MMI infotainment system</span>
+              <span class="spec-detail">faster processor, crisper display</span>
+            </span>
+          </li>
+          <li>
+            <span>
+              <span class="spec-headline">Improved LED headlights and daytime running lights</span>
+              <span class="spec-detail">across the range</span>
+            </span>
+          </li>
+          <li>
+            <span>
+              <span class="spec-headline">Better fuel economy</span>
+              <span class="spec-detail">on the 2.0 TDI engine, Audi reworked it for the 2017 model year</span>
+            </span>
+          </li>
+        </ul>
+        <p>It's the S-Line trim with the Quattro all-wheel drive, sitting at $16,999. No pressure either way, but if you wanted to swing by for a look and a coffee, give me a ring on <strong>0402 177 321</strong> and I'll have the keys ready.</p>
+        <p>Either way, hope you and the family are well.</p>
+        <div class="email-signoff">
+          Cheers,<br>
+          <strong>Gino</strong><br>
+          Unique Prestige Cars · 355 Grieve Parade, Altona North
+        </div>
+      </div>
+    </div>
+
+    <p style="font-style: italic; color: var(--muted); font-size: 14px; margin-top: 20px;">The agent drafts this. Gino reviews it on his phone, tweaks if needed, hits send. Each one takes him 30 seconds. Without the agent, he doesn't send any of them.</p>
+  </div>
+</section>
+
+<!-- ============ PROOF POINT ============ -->
+<section>
+  <div class="section-header">
+    <span class="section-num">V.</span>
+    <h2>The proof point project</h2>
+  </div>
+
+  <p class="lead">Before any of the build starts, we run a single, contained piece of work to validate the idea on UPC's actual data.</p>
+
+  <p>The proof point is a discrete project. You see exactly what the agent's upgrade capability will produce for 10 real past customers matched against your current inventory. If you and Gino are happy to send those drafts to your customers, we send them together and move into the 6-month build. The 10 customers are the agent's first real work, not a sample.</p>
+
+  <div class="proof-point">
+    <h3><svg class="icon icon-md" viewBox="0 0 24 24" style="color: var(--accent); margin-right: 10px; vertical-align: -4px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Ten draft upgrade emails, on UPC's real data</h3>
+    <p class="tagline">A standalone piece of work. Roughly a half-day on your side, three to four days on mine.</p>
+
+    <div class="proof-point-grid">
+      <div>
+        <ul class="phase-deliverables">
+          <li>Short sit-down with Rain to look at the customer data we have to work with, and how UPC tracks inventory today</li>
+          <li>Pick 10 past customers and match each one against UPC's current inventory</li>
+          <li>Hand-craft 10 draft upgrade emails, in the same shape as the worked example shown earlier</li>
+          <li>Walk through the 10 drafts with you and Gino. Each one marked send, edit and send, or skip. We send the approved ones together.</li>
+          <li>Brief honest assessment of the customer data quality and what the build will look like</li>
+        </ul>
+      </div>
+      <div class="proof-point-cost">
+        <div class="price">$1.5k</div>
+        <div class="price-label">Fixed fee</div>
+        <div class="price-detail">Covers all of the work. No add-ons, no scope creep, paid on delivery of the 10 emails.</div>
+        <div class="gate"><strong>The gate:</strong> if you and Gino approve at least 6 of the 10 drafts to send to your customers, we send them and move into the 6-month build.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE 6-MONTH ROADMAP ============ -->
+<section>
+  <div class="section-header">
+    <span class="section-num">VI.</span>
+    <h2>The six-month build</h2>
+  </div>
+
+  <p class="lead">Once the proof point lands, we build the agent in six monthly steps. The agent gains capabilities month by month, and each month earns its place before the next begins.</p>
+
+  <div class="roadmap">
+
+    <div class="phase">
+      <div class="phase-month">
+        <div class="num">01</div>
+        <div class="label">Foundation</div>
+      </div>
+      <div class="phase-content">
+        <h3>
+          <svg class="icon icon-md" viewBox="0 0 24 24" style="color: var(--accent); margin-right: 8px;"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+          The agent's foundation, plus its service capability
+        </h3>
+        <p class="tagline">Set up the customer database. The agent gains its first capability: watching service intervals.</p>
+        <ul class="phase-deliverables">
+          <li>Working session with Rain to consolidate customer data (names, contact details, cars purchased, dates) into one clean source</li>
+          <li>Service interval schedule built for the makes UPC sells (Audi, BMW, Mercedes, Porsche, VW, Volvo, Land Rover)</li>
+          <li>Service capability goes live: the agent monitors when each car is due and triggers reminder emails 60 days out</li>
+          <li>Simple dashboard for Rain or Gino to see what the agent has scheduled and who's been contacted</li>
+        </ul>
+        <div><span class="phase-tag value">Ships</span><span class="phase-tag">Service capability live</span><span class="phase-tag cost">$2k</span></div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-month">
+        <div class="num">02</div>
+        <div class="label">Anniversary</div>
+      </div>
+      <div class="phase-content">
+        <h3>
+          <svg class="icon icon-md" viewBox="0 0 24 24" style="color: var(--accent); margin-right: 8px;"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          The anniversary capability comes online
+        </h3>
+        <p class="tagline">The "we remember you" moment. Personal, warm, low-effort, high-impact.</p>
+        <ul class="phase-deliverables">
+          <li>Anniversary email designed in UPC's voice — personal, not corporate, signed off by Gino</li>
+          <li>Agent triggers at 12 months post-sale with the free wash offer</li>
+          <li>Wash bookings flow into the dashboard so Wally can plan capacity</li>
+          <li>Light tracking on who's redeemed the offer (useful proxy for engagement)</li>
+        </ul>
+        <div><span class="phase-tag value">Ships</span><span class="phase-tag">First anniversary emails</span><span class="phase-tag cost">$2k</span></div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-month">
+        <div class="num">03</div>
+        <div class="label">Eyes &amp; Brain</div>
+      </div>
+      <div class="phase-content">
+        <h3>
+          <svg class="icon icon-md" viewBox="0 0 24 24" style="color: var(--accent); margin-right: 8px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          We give the agent eyes (inventory) and a brain (specs)
+        </h3>
+        <p class="tagline">Inventory tracking and spec knowledge: what the upgrade capability needs to do its job.</p>
+        <ul class="phase-deliverables">
+          <li>Inventory watch set up: the agent reads UPC's current cars daily (from the website by default, deeper integration if useful)</li>
+          <li>Structured spec database for each make/model/year UPC sells — safety, infotainment, performance, dimensions</li>
+          <li>Matching logic: the agent pairs current inventory to past customers (model, body style, sensible upgrade path)</li>
+          <li>Dry run against 5 to 10 real past customers, with the match report shared so you can see what the agent has identified before any emails go out</li>
+        </ul>
+        <div><span class="phase-tag value">Ships</span><span class="phase-tag">Match report on real past customers</span><span class="phase-tag cost">$2k</span></div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-month">
+        <div class="num">04</div>
+        <div class="label">The Upgrade</div>
+      </div>
+      <div class="phase-content">
+        <h3>
+          <svg class="icon icon-md" viewBox="0 0 24 24" style="color: var(--accent); margin-right: 8px;"><path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3L12 3z"/></svg>
+          The upgrade capability goes live
+        </h3>
+        <p class="tagline">The agentic moment. The agent drafts the upgrade emails. Gino reviews. Send.</p>
+        <ul class="phase-deliverables">
+          <li>The agent combines past purchase + current inventory + meaningful spec differences into a personal note for Gino to send</li>
+          <li>Tone calibrated to feel like Gino, not a marketing platform — short, warm, human</li>
+          <li>Approval queue (mobile-friendly): drafts arrive for Gino, he edits or sends with one tap. Every edit is captured, so the learning capability has material to work with from day one.</li>
+          <li>First batch of real upgrade emails go out to matched past customers</li>
+        </ul>
+        <div><span class="phase-tag value">Ships</span><span class="phase-tag">Live upgrade emails</span><span class="phase-tag cost">$2k</span></div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-month">
+        <div class="num">05</div>
+        <div class="label">Learning</div>
+      </div>
+      <div class="phase-content">
+        <h3>
+          <svg class="icon icon-md" viewBox="0 0 24 24" style="color: var(--accent); margin-right: 8px;"><path d="M21 12a9 9 0 0 1-9 9c-2.4 0-4.65-.94-6.36-2.64L3 16"/><path d="M3 12a9 9 0 0 1 9-9c2.4 0 4.65.94 6.36 2.64L21 8"/><polyline points="21 3 21 8 16 8"/><polyline points="3 21 3 16 8 16"/></svg>
+          The learning capability matures
+        </h3>
+        <p class="tagline">Patterns from Gino's edits feed back into the agent. High-confidence matches start going out automatically.</p>
+        <ul class="phase-deliverables">
+          <li>Analyse Gino's edits over the past two months — which spec points he keeps, cuts, or adds; which customers he skips</li>
+          <li>Tune the agent's prompting based on what's working. Updated draft style ships into the queue</li>
+          <li>Move high-confidence match types (same make, same body style, well-known good fit) to fully automated send. Edge cases continue to Gino.</li>
+          <li>Lead routing so replies land in the right inbox automatically</li>
+        </ul>
+        <div><span class="phase-tag value">Ships</span><span class="phase-tag">Self-tuning, mostly automated agent</span><span class="phase-tag cost">$2k</span></div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-month">
+        <div class="num">06</div>
+        <div class="label">Operational</div>
+      </div>
+      <div class="phase-content">
+        <h3>
+          <svg class="icon icon-md" viewBox="0 0 24 24" style="color: var(--accent); margin-right: 8px;"><path d="M16.5 9.4 7.55 4.24"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          The agent runs the business in the background
+        </h3>
+        <p class="tagline">Final operational pieces. Real data on what's worked. Conversation about what comes next.</p>
+        <ul class="phase-deliverables">
+          <li>Sold-car auto-removal: the agent keeps its view of inventory current (when a car sells, it's removed from the agent's world automatically)</li>
+          <li>Quarterly review dashboard showing what's worked: emails sent, replies received, bookings driven, sales attributed</li>
+          <li>Conversation with Rob and Gino about what comes next, with real data to point at — extending the agent, expanding to other customer segments, or new capabilities entirely</li>
+          <li>Documentation and handover so Rain and Gino can run the agent confidently without constant input from us</li>
+        </ul>
+        <div><span class="phase-tag value">Ships</span><span class="phase-tag">Operational agent + roadmap forward</span><span class="phase-tag cost">$2k</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ VALUE TABLE ============ -->
+<section>
+  <div class="section-header">
+    <span class="section-num">VII.</span>
+    <h2>What each capability is worth</h2>
+  </div>
+
+  <p>Rough order of magnitude. Numbers are illustrative, not committed, but the relative scale is what matters.</p>
+
+  <table class="value-table">
+    <thead>
+      <tr>
+        <th>Capability</th>
+        <th>What it produces</th>
+        <th>Indicative annual value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Service</td>
+        <td>Workshop bookings UPC would have otherwise lost to Google's top result. Each service booked is margin you wouldn't have captured. Predictable, recurring revenue across the whole customer base.</td>
+        <td>Recurring</td>
+      </tr>
+      <tr>
+        <td>Anniversary</td>
+        <td>Hard to measure directly. Drives Google reviews, referrals, and the warm sense that UPC remembers people. Compounds over years.</td>
+        <td>Indirect</td>
+      </tr>
+      <tr>
+        <td>Upgrade</td>
+        <td>Repeat car sales that would have gone to another dealer. At $1k to $5k margin per sale, the case is built on volume: a few conversions a quarter across the customer base, not a single big win.</td>
+        <td>Multiple sales</td>
+      </tr>
+      <tr>
+        <td>Learning</td>
+        <td>Sharper drafts over time, less of Gino's attention required, higher conversion as the agent gets better at picking the right matches and the right language.</td>
+        <td>Compounding</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="font-style: italic; color: var(--muted); font-size: 14px;">The honest case: the proof point and the 6-month build together come to $13.5k. The engagement pays for itself when the combined workshop revenue and repeat-sale margin exceed that figure. Given UPC's customer base and the cars currently in your yard, that's a low bar.</p>
+</section>
+
+<!-- ============ INVESTMENT ============ -->
+<section>
+  <div class="investment">
+    <div class="eyebrow">The Numbers</div>
+    <h2>$1.5k to prove it. $12k to build it. About $50 a month to run it.</h2>
+    <p class="lead">Two discrete commitments. The proof point comes first as a standalone piece of work and ends with 10 real emails sent to 10 real customers. The 6-month build kicks off from there. Running costs are billed at or near cost.</p>
+
+    <div class="invest-grid">
+      <div class="invest-item">
+        <div class="num">$1.5k</div>
+        <div class="label">Proof point</div>
+        <div class="desc">Standalone, fixed fee. 10 hand-crafted upgrade emails on real UPC customer data. Approved emails get sent to those customers as the agent's first real work.</div>
+      </div>
+      <div class="invest-item">
+        <div class="num">$2k</div>
+        <div class="label">Per month, 6 months</div>
+        <div class="desc">$12k total. Each month ships a layer in production before we move to the next. Stop at any point and you keep what's built.</div>
+      </div>
+      <div class="invest-item">
+        <div class="num">~$50</div>
+        <div class="label">Per month, running</div>
+        <div class="desc">Covers AI tokens, transactional email sending, basic hosting. Billed at or near cost. Likely less in practice for a customer base of UPC's size.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">✦ ✦ ✦</div>
+
+<!-- ============ NEXT STEPS ============ -->
+<section>
+  <div class="section-header">
+    <span class="section-num">VIII.</span>
+    <h2>How we start</h2>
+  </div>
+
+  <p>The first move is a half-hour conversation with you, Gino, and ideally Rain so we can look at what shape the customer data is currently in. That's the gate for the proof point project.</p>
+
+  <p>Happy to come to Grieve Parade or do it over a call, whichever works.</p>
+
+  <p>A note on what the agent does for UPC strategically. Right now, cars come from Duttons, leads come from CarSales, and your competitive position relies on Gino's relationships and the quality of the yard. The agent doesn't touch the cars or the leads. It builds something UPC owns outright: a structured, ongoing customer relationship that no other dealer has access to. Over time, that's a moat.</p>
+
+  <p style="font-style: italic; color: var(--muted);">No commitment to the 6-month build until you've seen the 10 drafts and decided which ones to send. The 6 that need to be approved aren't a test of customer response (10 emails is too small a sample for that). They're a test of whether the agent's output is good enough that you'd put your name on it.</p>
+
+  <p style="font-size: 13px; color: var(--muted); margin-top: 24px;">Small adjacent things we can sort out whenever you want: a post-sale Google review prompt, cleaning up old website listings, the kinds of quick wins that don't need an agent. Happy to do those at cost once we're working together.</p>
+</section>
+
+<footer class="proposal-footer">
+  <span>Justin Watts · AI Consulting</span>
+  <span>Draft v1 · For discussion</span>
+</footer>
+
+</div>
+
+<script>
+(function() {
+  const tabs = document.querySelectorAll('.compare-tab');
+  const panels = document.querySelectorAll('.compare-panel');
+  let hintDismissed = false;
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-target');
+
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(p => p.classList.remove('active'));
+
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      const targetPanel = document.getElementById(target);
+      if (targetPanel) targetPanel.classList.add('active');
+
+      // Dismiss the tap hint permanently once user has interacted
+      if (!hintDismissed) {
+        const hint = document.querySelector('.tap-hint');
+        if (hint) hint.style.display = 'none';
+        hintDismissed = true;
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
