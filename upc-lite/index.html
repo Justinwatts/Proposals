@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPC Lifecycle Agent — Lighter path</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a1a;
+  --paper: #f5f1e8;
+  --paper-deep: #ebe4d3;
+  --accent: #8b1e1e;
+  --accent-soft: #d4a574;
+  --rule: #2a2a2a;
+  --muted: #6b6259;
+  --highlight: #fff8dc;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.55;
+  font-size: 16px;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(139, 30, 30, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(212, 165, 116, 0.04) 0%, transparent 50%);
+}
+
+.container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 28px 22px 40px;
+}
+
+/* --- Masthead --- */
+.masthead {
+  border-top: 4px double var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 18px 0 16px;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.masthead::before {
+  content: "PROPOSAL · LITE";
+  position: absolute;
+  top: 6px;
+  right: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+
+h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+}
+
+.subtitle {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* --- Sections --- */
+section { margin: 32px 0; }
+
+.section-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+}
+
+p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+/* --- Price callout right under headline --- */
+.price-card {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 18px 20px;
+  margin: 20px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.price-card::before {
+  content: "$";
+  position: absolute;
+  right: -10px;
+  bottom: -50px;
+  font-family: 'Fraunces', serif;
+  font-size: 180px;
+  font-weight: 300;
+  color: rgba(212, 165, 116, 0.1);
+  line-height: 1;
+}
+
+.price-card .num {
+  font-family: 'Fraunces', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--accent-soft);
+  line-height: 1;
+  position: relative;
+}
+
+.price-card .desc {
+  font-size: 13px;
+  color: rgba(245, 241, 232, 0.85);
+  margin-top: 6px;
+  line-height: 1.45;
+  position: relative;
+  max-width: 38ch;
+}
+
+/* --- Worked example --- */
+.example-setup {
+  background: var(--paper-deep);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
+.example-setup .setup-row { padding: 3px 0; }
+
+.example-setup .setup-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.example-setup .setup-value {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.email-mockup {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08);
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.email-meta {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 12px;
+  color: #555;
+}
+
+.email-meta .subj {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-top: 4px;
+}
+
+.email-body {
+  padding: 16px 18px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #2a2a2a;
+}
+
+.email-body p { margin-bottom: 10px; }
+
+.email-signoff {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #555;
+}
+
+.email-signoff strong { color: #1a1a1a; }
+
+/* --- In / out summary --- */
+.scope-row {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.12);
+  align-items: baseline;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.scope-row:last-child { border-bottom: none; }
+
+.scope-row .tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.scope-row.in .tag { color: var(--accent); }
+.scope-row.out .tag { color: var(--muted); }
+.scope-row.out { color: var(--muted); }
+
+/* --- Footer --- */
+.proposal-footer {
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 4px double var(--rule);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+}
+
+a.car-link {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-soft);
+  font-weight: 500;
+}
+
+a.car-link:active { background: var(--highlight); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- ============ MASTHEAD ============ -->
+<header class="masthead">
+  <div class="eyebrow">For Rob &amp; Gino · UPC</div>
+  <h1>The <em>Lifecycle</em> Agent<br>Lighter path</h1>
+  <p class="subtitle">Same idea as the earlier proposal. One capability, set up properly. Rain runs it once a week.</p>
+
+  <div class="price-card">
+    <div class="num">$3,000 <span style="font-size:14px; font-weight:400; letter-spacing:0.05em;">+ GST</span></div>
+    <div class="desc">Flat fee, paid on completion. UPC owns it from day one. No retainer. ~$20/month Claude subscription on your side to run it (billed directly by Anthropic).</div>
+  </div>
+</header>
+
+<!-- ============ THE IDEA ============ -->
+<section>
+  <div class="section-label">The idea</div>
+  <h2>One capability, the upgrade one</h2>
+  <p>We set up a Claude Project loaded with your past customer base. When a new car gets listed, Rain pastes the URL into the project and it returns 3 to 5 customers who'd suit the car, with a draft email in Gino's voice for each one.</p>
+  <p>Gino reviews, sends. Same matches, same emails the bigger agent would produce. The difference is Rain runs it, not a scheduled agent.</p>
+</section>
+
+<!-- ============ WORKED EXAMPLE ============ -->
+<section>
+  <div class="section-label">What you'd get</div>
+  <h2>Match + email, ready to send</h2>
+
+  <div class="example-setup">
+    <div class="setup-row">
+      <span class="setup-label">Past customer</span>
+      <span class="setup-value">Sarah · bought a 2014 CLA200 from UPC, late 2023</span>
+    </div>
+    <div class="setup-row" style="margin-top:8px;">
+      <span class="setup-label">New car listed</span>
+      <span class="setup-value"><a class="car-link" href="https://uniqueprestigecars.com.au/car/2016-mercedes-benz-cla-class-cla250-sport-4matic-x117-wagon/">2016 CLA250 Sport 4MATIC Wagon · $17,999</a></span>
+    </div>
+  </div>
+
+  <div class="email-mockup">
+    <div class="email-meta">
+      <div><strong>From</strong> Gino · UPC</div>
+      <div><strong>To</strong> Sarah</div>
+      <div class="subj">Just took something in I thought of you for</div>
+    </div>
+    <div class="email-body">
+      <p>Hi Sarah,</p>
+      <p>Hope the CLA200 is still going well, must be coming up on two years now.</p>
+      <p>Just took something in I thought of you for. 2016 CLA250 Sport 4MATIC, the wagon body. Same CLA line but a step up: bit more grunt, all-wheel drive, more room out the back. Two years newer than yours.</p>
+      <p>Listed at $17,999. Has done 154k so worth a look in person if you're interested.</p>
+      <p>No pressure either way. Happy to put it in front of you anytime.</p>
+      <div class="email-signoff">
+        Cheers,<br>
+        <strong>Gino</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT'S IN / OUT ============ -->
+<section>
+  <div class="section-label">Scope</div>
+  <h2>In and out</h2>
+
+  <div class="scope-row in">
+    <span class="tag">In</span>
+    <span>Upgrade matching and email drafting, the most valuable capability.</span>
+  </div>
+  <div class="scope-row in">
+    <span class="tag">In</span>
+    <span>Customer data pulled from EasyCars and your previous system, merged and cleaned.</span>
+  </div>
+  <div class="scope-row in">
+    <span class="tag">In</span>
+    <span>Calibration session with Gino so the drafts sound like him.</span>
+  </div>
+  <div class="scope-row in">
+    <span class="tag">In</span>
+    <span>Handover to Rain, half-page workflow doc, 2 weeks of support.</span>
+  </div>
+  <div class="scope-row out">
+    <span class="tag">Out</span>
+    <span>Service reminders. Parked.</span>
+  </div>
+  <div class="scope-row out">
+    <span class="tag">Out</span>
+    <span>Anniversary emails. Parked.</span>
+  </div>
+  <div class="scope-row out">
+    <span class="tag">Out</span>
+    <span>Daily inventory watching, automatic drafting. Rain triggers it manually.</span>
+  </div>
+</section>
+
+<!-- ============ NEXT STEP ============ -->
+<section>
+  <div class="section-label">Next step</div>
+  <h2>Send me the data</h2>
+  <p>If you're a yes, give me the go-ahead to touch base with Rain and get access to the customer data out of EasyCars and your previous system.</p>
+  <p>Once I have it, I'll get the project built and come back to Gino for a 30-minute voice calibration when there's something real to show him. Two weeks from data to live.</p>
+</section>
+
+<footer class="proposal-footer">
+  <div>Justin Watts</div>
+  <div>Lite · For discussion</div>
+</footer>
+
+</div>
+
+</body>
+</html>
