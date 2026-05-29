@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three options for Kinder Music — Justin Watts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1614;
+    --ink-soft: #4a423d;
+    --ink-faint: #8a7f78;
+    --cream: #f4ede2;
+    --cream-deep: #ebe2d3;
+    --paper: #faf6ee;
+    --accent: #b4543a;
+    --accent-soft: #d4856a;
+    --accent-pale: #f0d9cc;
+    --line: #d8cdb9;
+    --line-soft: #e5dcc9;
+    --shadow: 0 1px 2px rgba(26,22,20,0.04), 0 4px 16px rgba(26,22,20,0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 380;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-variation-settings: "opsz" 14, "SOFT" 30;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* HEADER */
+  header {
+    padding: 72px 0 56px;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--cream) 0%, var(--paper) 100%);
+  }
+
+  .header-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .eyebrow {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+    max-width: 120px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 320;
+    font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
+    font-size: clamp(40px, 6vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  h1 em {
+    font-style: italic;
+    font-weight: 280;
+    color: var(--accent);
+  }
+
+  .lead {
+    font-size: 19px;
+    color: var(--ink-soft);
+    max-width: 560px;
+    line-height: 1.5;
+  }
+
+  .header-meta {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink-faint);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 36px;
+  }
+
+  .header-meta span { display: inline-flex; gap: 8px; align-items: center; }
+  .header-meta strong { color: var(--ink); font-weight: 600; }
+
+  /* SECTIONS */
+  section { padding: 64px 0; }
+  section + section { border-top: 1px solid var(--line-soft); }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 350;
+    font-variation-settings: "opsz" 72, "SOFT" 40;
+    font-size: clamp(26px, 3.5vw, 34px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 320;
+  }
+
+  .section-eyebrow {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 20px;
+  }
+
+  p { margin-bottom: 18px; color: var(--ink-soft); }
+  p:last-child { margin-bottom: 0; }
+
+  /* PROJECT CARDS */
+  .project {
+    background: var(--cream);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    padding: 36px;
+    margin-top: 28px;
+    box-shadow: var(--shadow);
+  }
+
+  .project.optional {
+    background: var(--paper);
+    border-style: dashed;
+    border-color: var(--line);
+  }
+
+  .project-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .project-label {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .project.optional .project-label { color: var(--ink-faint); }
+
+  .project h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .price-tag {
+    font-family: 'Fraunces', serif;
+    font-weight: 320;
+    font-variation-settings: "opsz" 96, "SOFT" 50;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .price-tag sup {
+    font-size: 18px;
+    color: var(--accent);
+    vertical-align: super;
+    font-weight: 400;
+    margin-right: 2px;
+  }
+
+  .price-tag .from {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .project-body {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .project-body p { margin-bottom: 14px; }
+
+  .what-includes {
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .what-includes h4 {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 12px;
+  }
+
+  .what-includes ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .what-includes li {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    padding: 6px 0 6px 22px;
+    position: relative;
+  }
+
+  .what-includes li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 12px;
+    top: 8px;
+  }
+
+  /* BEFORE/AFTER FLOW */
+  .flow-block {
+    margin-top: 24px;
+    background: var(--paper);
+    border: 1px solid var(--line-soft);
+    border-radius: 4px;
+    padding: 22px;
+  }
+
+  .flow-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .flow-title {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .flow-toggle {
+    display: inline-flex;
+    background: var(--cream-deep);
+    border-radius: 100px;
+    padding: 3px;
+    border: 1px solid var(--line);
+    position: relative;
+  }
+
+  .flow-toggle button {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 100px;
+    color: var(--ink-faint);
+    transition: color 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-toggle button.active { color: var(--paper); }
+  .flow-toggle button:hover:not(.active) { color: var(--ink); }
+
+  .flow-toggle .toggle-pill {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    background: var(--ink);
+    border-radius: 100px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+  }
+
+  .flow-toggle.after-active .toggle-pill {
+    background: var(--accent);
+  }
+
+  .flow-viewport {
+    position: relative;
+    min-height: 220px;
+  }
+
+  .flow-pane {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .flow-pane.active {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+  }
+
+  .flow-summary {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 14px;
+    background: var(--cream);
+    border: 1px solid var(--line-soft);
+    border-radius: 4px;
+    animation: stepIn 0.35s ease backwards;
+  }
+
+  .flow-pane.active .flow-step:nth-child(1) { animation-delay: 0.04s; }
+  .flow-pane.active .flow-step:nth-child(2) { animation-delay: 0.10s; }
+  .flow-pane.active .flow-step:nth-child(3) { animation-delay: 0.16s; }
+  .flow-pane.active .flow-step:nth-child(4) { animation-delay: 0.22s; }
+
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--cream-deep);
+    color: var(--ink-soft);
+  }
+
+  .flow-pane.after .step-icon {
+    background: var(--accent-pale);
+    color: var(--accent);
+  }
+
+  .step-body { flex: 1; }
+
+  .step-text {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .step-meta {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+
+  .flow-pane.before .step-meta { color: var(--accent); }
+
+  /* CLOSING */
+  .closing {
+    text-align: center;
+    padding: 64px 0 88px;
+    background: linear-gradient(180deg, var(--paper) 0%, var(--cream) 100%);
+    border-top: 1px solid var(--line);
+  }
+
+  .closing h2 { margin-bottom: 18px; }
+  .closing p {
+    max-width: 500px;
+    margin: 0 auto 16px;
+    font-size: 16px;
+  }
+
+  .signature {
+    margin-top: 48px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 380;
+    font-size: 17px;
+    color: var(--ink-soft);
+  }
+
+  .signature .name {
+    display: block;
+    font-style: normal;
+    font-weight: 450;
+    color: var(--ink);
+    margin-top: 8px;
+    font-size: 19px;
+  }
+
+  .ornament {
+    text-align: center;
+    margin: 36px 0 0;
+    color: var(--accent);
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    letter-spacing: 1em;
+  }
+
+  .footnote {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-top: 28px;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .container, .header-inner { padding: 0 24px; }
+    section { padding: 48px 0; }
+    header { padding: 56px 0 40px; }
+    .project { padding: 26px; }
+    .project-head { gap: 12px; }
+    .price-tag { font-size: 26px; }
+    .project h3 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="eyebrow"><span>For Kinder Music</span></div>
+    <h1>Three ways I could help, <em>at sizes that work for your studio</em></h1>
+    <p class="lead">After our conversation, here are three projects I could deliver. Each one is independent. You can take any of them, all of them, or none. There's no package, no minimum, no pressure.</p>
+    <div class="header-meta">
+      <span>Prepared for <strong>Katrina &amp; Greg</strong></span>
+      <span>From <strong>Justin Watts</strong></span>
+      <span>May 2026</span>
+    </div>
+  </div>
+</header>
+
+<!-- PROJECT 1: EMAILS -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow">Project one</div>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-label">Targeted communication</div>
+          <h3>A focused piece of work, done end to end</h3>
+        </div>
+        <div class="price-tag">
+          <span class="from">Fixed price</span>
+          <sup>$</sup>2,000
+        </div>
+      </div>
+
+      <div class="project-body">
+        <p>A single piece of work that delivers the right messages to one specific group of families, at a moment that matters in their journey.</p>
+        <p>We'd choose the cohort together. A natural starting point is families who've recently moved from the free baby classes into the paid program, the moment where attrition starts and where the right early communication matters most. You'll have a stronger view on which group would tell us the most.</p>
+        <p>From there, I'd work through four years of your newsletter archive, identify the pieces that fit this cohort and this moment, and draft a short sequence in your voice. You'd review and shape the wording. We'd send the emails properly, to the right families, at the right intervals, and then watch carefully what happens. Open rates, replies, follow-on enrolment, anything qualitative you hear back.</p>
+        <p>After the sequence runs, we'd sit down and look at the response together. That conversation tells us whether targeted communication does what we think it could do for your studio, and what (if anything) we'd build from there.</p>
+      </div>
+
+      <div class="what-includes">
+        <h4>Included</h4>
+        <ul>
+          <li>Choose the cohort together and get the family data into a workable shape</li>
+          <li>Review the four-year newsletter archive and identify the pieces that fit this cohort and this moment</li>
+          <li>Draft a short sequence in your voice, refined with you</li>
+          <li>Send the emails carefully, at the right intervals, to the right families</li>
+          <li>Watch what happens, then sit down together to look at the response and decide what comes next</li>
+        </ul>
+      </div>
+
+      <div class="what-includes" style="border-top-color: var(--line); margin-top: 20px; padding-top: 20px;">
+        <h4>What this is, and isn't</h4>
+        <p style="font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin: 0;">A complete, considered piece of work on one cohort. Not an ongoing system. If the response is strong, the natural next conversation is about building something that runs by itself across every cohort in your studio. That's a separate piece of work and a separate decision, made together once we've seen the results.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT 2: SCHEDULING -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow">Project two</div>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-label">December scheduling</div>
+          <h3>A tool for the annual timetable</h3>
+        </div>
+        <div class="price-tag">
+          <span class="from">Fixed price</span>
+          <sup>$</sup>3,000
+        </div>
+      </div>
+
+      <div class="project-body">
+        <p>Every December you and Greg spend somewhere between twenty and forty hours fitting around ninety students into lesson slots. Three passes through paper, spreadsheets, and memory. The same problem every year, with no system that holds the rules.</p>
+        <p>This project builds a scheduling tool designed around how you actually decide. Families enter availability through a simple link. The tool proposes a draft timetable respecting your rules (siblings together, teacher availability, age clustering). You review, adjust the tricky cases, and send it out. Realistic time saving: around ninety percent.</p>
+        <p>Delivered before the end of October so it's ready well ahead of the December crunch.</p>
+      </div>
+
+      <div class="what-includes">
+        <h4>Included</h4>
+        <ul>
+          <li>Sit with you and Greg, walk through last December in detail to understand how you actually decide</li>
+          <li>Build a simple availability form that families fill in via a link</li>
+          <li>Build the scheduling logic, tested against last year's roster so we know it produces results you'd accept</li>
+          <li>One-click send so everyone gets their slot when you're ready</li>
+          <li>Hand over with documentation, ready to use for this December</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT 3: PRACTICE APP -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow">Project three · optional</div>
+
+    <div class="project optional">
+      <div class="project-head">
+        <div>
+          <div class="project-label">Practice app</div>
+          <h3>The practice tracker we sketched</h3>
+        </div>
+        <div class="price-tag">
+          <span class="from">From</span>
+          <sup>$</sup>3,000
+        </div>
+      </div>
+
+      <div class="project-body">
+        <p>When we spoke, you mentioned an idea for a practice app where teachers set tasks, parents tick them off, and the group sees a shared visualisation of practice happening across the studio. Not surveillance, not leaderboards, just gentle visibility built around your pedagogy.</p>
+        <p>If you'd like to explore it, a pilot version for one group of families would start at $3,000. That gets you a working web app: teacher portal for setting tasks, parent portal for ticking them off, a simple group visualisation. Enough for one cohort to use for a term and see whether it actually changes anything.</p>
+        <p>This one's listed as optional because it isn't a current pain point in the same way as the other two. Happy to build it if you want it, equally happy to leave it as a conversation for another time.</p>
+      </div>
+
+      <div class="what-includes">
+        <h4>What a pilot version includes</h4>
+        <ul>
+          <li>Teacher view: log in, set three to five practice tasks for the week per student</li>
+          <li>Parent view: check off tasks, add a note if they want, no audio or surveillance</li>
+          <li>Group view: a shared visualisation that fills as the group practices together</li>
+          <li>Deployed and set up for one pilot cohort of your choosing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="container">
+    <div class="section-eyebrow">If any of these feel useful</div>
+    <h2>Let me know which, <em>if any</em>, you'd like to take further.</h2>
+    <p>No pressure on any of them. Reply with what feels right and we'll go from there.</p>
+
+    <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+    <div class="signature">
+      Looking forward to hearing what you think,
+      <span class="name">Justin Watts</span>
+    </div>
+
+    <div class="footnote">All prices ex GST.</div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.flow-toggle').forEach(toggle => {
+    const buttons = toggle.querySelectorAll('button');
+    const pill = toggle.querySelector('.toggle-pill');
+    const flow = toggle.dataset.flow;
+
+    function positionPill(activeBtn) {
+      const rect = activeBtn.getBoundingClientRect();
+      const parentRect = toggle.getBoundingClientRect();
+      pill.style.left = (rect.left - parentRect.left) + 'px';
+      pill.style.width = rect.width + 'px';
+    }
+
+    requestAnimationFrame(() => {
+      const active = toggle.querySelector('button.active');
+      if (active) positionPill(active);
+    });
+
+    window.addEventListener('resize', () => {
+      const active = toggle.querySelector('button.active');
+      if (active) positionPill(active);
+    });
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        positionPill(btn);
+
+        const pane = btn.dataset.pane;
+        if (pane === 'after') {
+          toggle.classList.add('after-active');
+        } else {
+          toggle.classList.remove('after-active');
+        }
+
+        const panes = document.querySelectorAll(`.flow-pane[data-flow="${flow}"]`);
+        panes.forEach(p => {
+          if (p.dataset.pane === pane) {
+            p.classList.add('active');
+          } else {
+            p.classList.remove('active');
+          }
+        });
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
